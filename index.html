@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Renderer</title>
+</head>
+<body style="background-color: black;">
+
+<div id="app" style="max-width: 100%; max-height: 100%; display: flex; overflow: auto; background-color: #00000000; margin:auto;">
+    <textarea  placeholder="Enter MarkDown Here" id="markdownInput" style="width: 20rem; height: 30rem;  flex: 1; padding: 1rem; background-color: #b1b1b1; resize:none; border-style:none;"></textarea>
+    <div id="markdownOutput" style="width: 20rem; height: 30rem;  flex: 1; padding: 1rem; background-color: #8f8f8f; border-style:none;"></div>
+</div>
+
+<script>
+    document.getElementById("markdownInput").addEventListener("input", function() {
+        let value = this.value;
+        document.getElementById("markdownOutput").innerHTML = markdownToHtml(value);
+    });
+
+    function markdownToHtml(md) {
+        let html = md;
+
+        // Convert headers
+        html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+        html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+        html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+
+        // Convert bold text
+        html = html.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
+
+        // Convert italic text
+        html = html.replace(/\*(.*?)\*/gim, '<i>$1</i>');
+
+        // Convert links
+        html = html.replace(/\[(.*?)\]\((.*?)\)/gim, '<a href="$2">$1</a>');
+
+        return html.trim();
+    }
+</script>
+
+</body>
+</html>
